@@ -16,7 +16,6 @@ public class Student {
         this.gender = gender;
         this.conduct = conduct;
         this.clazzId = clazzId;
-        idIncrement++;
     }
 
     public Student(int id, String name, double score, String gender, String conduct, int clazzId) {
@@ -81,6 +80,6 @@ public class Student {
 
     @Override
     public String toString() {
-        return " Sinh viên " + " | Mã sinh viên " + id + " | Tên sinh viên " + name + " | Giới tính " + gender + " | Hạnh kiểm  " + conduct;
+        return " Sinh viên " + " | Mã sinh viên " + id + " | Tên sinh viên " + name + " | Điểm sinh viên " + score + " | Giới tính " + gender + " | Hạnh kiểm  " + conduct;
     }
 }

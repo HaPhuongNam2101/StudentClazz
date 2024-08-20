@@ -3,7 +3,9 @@ package view;
 import input.Input;
 import manager.ClazzManager;
 import manager.StudentManager;
+import model.Clazz;
 import model.Student;
+import validate.Regex;
 
 import java.util.List;
 
@@ -42,13 +44,30 @@ public class StudentMenu {
                     break;
                 case 5:
                     showSearchByScoreMenu();
+                    break;
+                case 6:
+                    showSearchByConductMenu();
+                    break;
+                case 7:
+                    showSearchByClazzMenu();
+                    break;
+                case 8:
+                    showSearchTopStudentMenu();
+                    break;
+                case 9:
+                    showSortStudentsMenu();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Không có lựa chọn! ");
             }
         } while(choice != 0);
     }
+
     public void showAddStudentMenu() {
         System.out.println("===== Thêm mới sinh viên ===== ");
-        System.out.println("Nhập tên sinh viên ");
-        String name = Input.inputString();
+        String name = Regex.validateName();
         System.out.println("Nhập điểm sinh viên ");
         double score = Input.inputNumber();
         System.out.println("Nhập giới tính sinh viên: ");
@@ -71,7 +90,7 @@ public class StudentMenu {
             return;
         }
         System.out.println("Nhập tên mới: ");
-        String name = Input.inputString();
+        String name = Regex.validateName();
         System.out.println("Nhập điểm mới: ");
         double score = Input.inputNumber();
         System.out.println("Nhập giới tính mới: ");
@@ -86,14 +105,17 @@ public class StudentMenu {
     }
     public void showDeleteStudentMenu() {
         System.out.println("===== Xóa sinh viên =====");
-        System.out.println("Nhập mã sinh viên: ");
+        System.out.println("Nhập id sinh viên: ");
         int id = Input.inputNumber();
         studentManager.delete(id);
         System.out.println("Xóa sinh viên thành công.");
     }
     public void displayAllStudents() {
+        System.out.println("===== Danh sách sinh viên =====");
         List<Student> students = studentManager.getAll();
-        students.forEach(System.out::println);
+        for(Student student : students) {
+            System.out.println(student);
+        }
     }
     public void showSearchByScoreMenu() {
         System.out.println("===== Tìm kiếm sinh viên theo khoảng điểm =====");
@@ -103,5 +125,56 @@ public class StudentMenu {
         double maxScore = Input.inputNumber();
         List<Student> students = studentManager.searchByScoreRange(minScore, maxScore);
         students.forEach(System.out::println);
+    }
+    public void showSearchByConductMenu() {
+        System.out.println("===== Tìm kiếm sinh viên theo hạnh kiểm =====");
+        System.out.println("Nhập hạnh kiểm: ");
+        String conduct = Input.inputString();
+        List<Student> students = studentManager.searchByConduct(conduct);
+        if (students.isEmpty()) {
+            System.out.println("Không tìm thấy sinh viên với hạnh kiểm này.");
+        } else {
+            students.forEach(System.out::println);
+        }
+    }
+    public void showSearchByClazzMenu() {
+        System.out.println("===== Tìm kiếm sinh viên theo lớp =====");
+        System.out.println("Danh sách các lớp: ");
+        List<Clazz> clazzList = clazzManager.getAll(); // Assuming ClazzManager has a method to get all classes
+        for (Clazz clazz : clazzList) {
+            System.out.println("Mã lớp: " + clazz.getId() + ", Tên lớp: " + clazz.getName());
+        }
+        System.out.println("Nhập mã lớp: ");
+        int clazzId = Input.inputNumber();
+        List<Student> students = studentManager.searchByClazz(clazzId);
+        students.forEach(System.out::println);
+    }
+    public void showSearchTopStudentMenu() {
+        System.out.println("===== Tìm sinh viên có điểm cao nhất =====");
+        Student topStudent = studentManager.findTopStudent();
+        if (topStudent != null) {
+            System.out.println(topStudent);
+        } else {
+            System.out.println("Không có sinh viên nào.");
+        }
+    }
+    public void showSortStudentsMenu() {
+        System.out.println("===== Sắp xếp danh sách sinh viên =====");
+        System.out.println("1. Sắp xếp theo tên");
+        System.out.println("2. Sắp xếp theo điểm");
+        System.out.println("Nhập lựa chọn: ");
+        int sortChoice = Input.inputNumber();
+        switch (sortChoice) {
+            case 1:
+                studentManager.sortByName();
+                break;
+            case 2:
+                studentManager.sortByScore();
+                break;
+            default:
+                System.out.println("Lựa chọn không hợp lệ.");
+                return;
+        }
+        displayAllStudents();
     }
 }

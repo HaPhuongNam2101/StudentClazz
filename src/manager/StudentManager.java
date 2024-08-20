@@ -5,6 +5,7 @@ import saveData.ReadAndWriteClazz;
 import saveData.ReadAndWriteStudent;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class StudentManager implements IManager<Student> {
@@ -57,5 +58,35 @@ public class StudentManager implements IManager<Student> {
             }
         }
         return result;
+    }
+    public List<Student> searchByConduct(String conduct) {
+        List<Student> result = new ArrayList<>();
+        for (Student student : studentsList) {
+            if (student.getConduct().equalsIgnoreCase(conduct)) {
+                result.add(student);
+            }
+        }
+        return result;
+    }
+    public List<Student> searchByClazz(int clazzId) {
+        List<Student> result = new ArrayList<>();
+        for (Student student : studentsList) {
+            if (student.getClazzId() == clazzId) {
+                result.add(student);
+            }
+        }
+        return result;
+    }
+    public Student findTopStudent() {
+        if (studentsList.isEmpty()) {
+            return null;
+        }
+        return studentsList.stream().max(Comparator.comparingDouble(Student::getScore)).orElse(null);
+    }
+    public void sortByName() {
+        studentsList.sort(Comparator.comparing(Student::getName));
+    }
+    public void sortByScore() {
+        studentsList.sort(Comparator.comparingDouble(Student::getScore));
     }
 }

@@ -47,4 +47,15 @@ public class ClazzManager implements IManager<Clazz> {
        }
        return -1;
     }
+    public Clazz findClazzById (int id) {
+        int index = findIndexById(id);
+        return clazzList.get(index);
+    }
+
+
+    public int getIdClazz(int index) {
+        List<Clazz> clazzList = getAll();
+        Clazz clazz = clazzList.get(index);
+        return clazz.getId();
+    }
 }

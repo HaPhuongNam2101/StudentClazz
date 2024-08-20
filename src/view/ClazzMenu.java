@@ -46,6 +46,7 @@ public class ClazzMenu {
         System.out.println("Thêm thành công ");
     }
     public void showAllClazzMenu() {
+        System.out.println("===== Danh sách lớp =====");
         List<Clazz> classList = clazzManager.getAll();
         for (Clazz clazz : classList) {
             System.out.println(clazz);
